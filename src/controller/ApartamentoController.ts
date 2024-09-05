@@ -37,6 +37,25 @@ export class ApartamentoController {
         return this.apartamentoRepository.save(apartamentoModel)
     }
 
+    async update(request: Request, response: Response, next: NextFunction) {
+        const id = parseInt(request.params.id);
+        const { bloco, apartamento, morador, telefone, email } = request.body;
+    
+        let apartamentoToUpdate = await this.apartamentoRepository.findOneBy({ id });
+    
+        if (!apartamentoToUpdate) {
+            return response.status(404).send("Apartamento not found");
+        }
+    
+        apartamentoToUpdate.bloco = bloco;
+        apartamentoToUpdate.apartamento = apartamento;
+        apartamentoToUpdate.morador = morador;
+        apartamentoToUpdate.telefone = telefone;
+        apartamentoToUpdate.email = email;
+    
+        return this.apartamentoRepository.save(apartamentoToUpdate);
+    }
+
     async remove(request: Request, response: Response, next: NextFunction) {
         const id = parseInt(request.params.id)
 
@@ -46,9 +65,8 @@ export class ApartamentoController {
             return "this apartamento not exist"
         }
 
-        await this.apartamentoRepository.remove(apartamentoToRemove)
+        return this.apartamentoRepository.remove(apartamentoToRemove);
 
-        return "apartamento has been removed"
     }
 
 }

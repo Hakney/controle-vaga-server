@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm"
+import { Veiculo } from "./Veiculo"
 
 @Entity()
 export class Apartamento {
@@ -20,4 +21,7 @@ export class Apartamento {
 
     @Column({ length: 100, nullable: true})
     email: string
+
+    @OneToMany(() => Veiculo, veiculo => veiculo.apartamento)
+    veiculos: Veiculo[];
 }
